@@ -9,7 +9,7 @@ import { buildRoutes, getManifest } from './app.routes';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   navLinks: { path: string; display: string }[] = [];
   constructor(private router: Router) {
     const manifest = getManifest();
@@ -20,9 +20,5 @@ export class AppComponent implements OnInit {
         display: entry.displayName,
       });
     });
-  }
-
-  ngOnInit(): void {
-    //this.router.resetConfig(buildRoutes());
   }
 }
