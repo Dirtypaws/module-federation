@@ -1,0 +1,14 @@
+{
+  "name": "module-federation",
+  "version": "0.0.1-alpha",
+  "description": "A sample project",
+  "scripts": {
+    "run": "ng serve core -o & ng serve versions",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@angular/cli": "^18.2.6"
+  }
+}

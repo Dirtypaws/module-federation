@@ -1,0 +1,8 @@
+<div>
+  <ul>
+    @for (app of applications; track app.key) {
+    <li>{{ app.key }}: {{ app.version }}</li>
+    }
+    <!-- <li *ngFor="let app of applications">{{ app.key }}: {{ app.version }}</li> -->
+  </ul>
+</div>

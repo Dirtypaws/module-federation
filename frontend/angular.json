@@ -1,0 +1,179 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "",
+  "projects": {
+    "core": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "core",
+      "sourceRoot": "core/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "target": "core:esbuild:production",
+            "polyfills": []
+          }
+        },
+        "serve": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "target": "core:serve-original:development",
+            "rebuildDelay": 0,
+            "dev": true
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "core:build"
+          }
+        },
+        "esbuild": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/core",
+            "index": "core/src/index.html",
+            "polyfills": ["zone.js", "es-module-shims"],
+            "tsConfig": "core/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "core/public"
+              }
+            ],
+            "styles": ["core/src/styles.scss"],
+            "scripts": [],
+            "browser": "core/src/main.ts"
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-original": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "core:esbuild:production"
+            },
+            "development": {
+              "buildTarget": "core:esbuild:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
+    },
+    "versions": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "versions",
+      "sourceRoot": "versions/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "target": "versions:esbuild:production",
+            "polyfills": []
+          }
+        },
+        "serve": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "target": "versions:serve-original:development",
+            "rebuildDelay": 0,
+            "dev": true
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "versions:build"
+          }
+        },
+        "esbuild": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/versions",
+            "index": "versions/src/index.html",
+            "polyfills": ["zone.js", "es-module-shims"],
+            "tsConfig": "versions/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "versions/public"
+              }
+            ],
+            "styles": ["versions/src/styles.scss"],
+            "scripts": [],
+            "browser": "versions/src/main.ts"
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-original": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "versions:esbuild:production"
+            },
+            "development": {
+              "buildTarget": "versions:esbuild:development",
+              "port": 4201
+            }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
+}
