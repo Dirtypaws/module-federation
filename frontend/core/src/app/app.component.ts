@@ -1,17 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { buildRoutes, getManifest } from './app.routes';
+import { Component, signal } from '@angular/core';
+import { getManifest } from './app.routes';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
+  sidebarVisible = signal(false);
   navLinks: { path: string; display: string }[] = [];
-  constructor(private router: Router) {
+
+  constructor() {
     const manifest = getManifest();
     Object.keys(manifest).map((key) => {
       const entry = manifest[key];

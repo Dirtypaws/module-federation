@@ -1,15 +1,9 @@
 import { Routes } from '@angular/router';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { HomeComponent } from './home/home.component';
 import { loadRemoteModule } from '@angular-architects/native-federation';
 import { CustomManifest } from './app.routes.definition';
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent,
-    pathMatch: 'full',
-  },
   {
     path: '**',
     component: NotFoundComponent,
@@ -25,7 +19,6 @@ export function buildRoutes(): Routes {
       loadChildren: () => loadRemoteModule(key, entry.exposedModule).then((m) => m[entry.ngModuleName]),
     };
   });
-  console.log([...lazyRoutes, ...routes]);
   return [...lazyRoutes, ...routes];
 }
 
