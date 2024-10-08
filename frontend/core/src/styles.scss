@@ -2,8 +2,10 @@
 @import url('https://fonts.cdnfonts.com/css/metrodf');
 @import 'primeng/resources/primeng.css';
 @import 'primeng/resources/themes/aura-light-noir/theme.css';
+@import 'primeicons/primeicons.css';
 
 body {
   //font-family: 'MetroDF', sans-serif;
   margin: 0;
+  background-color: var(--surface-ground);
 }

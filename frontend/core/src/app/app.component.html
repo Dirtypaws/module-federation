@@ -1,11 +1,14 @@
-<header></header>
+<header>
+  <p-button pButton pRipple [text]="true" (onClick)="sidebarVisible.set(true)">
+    <i class="pi pi-bars"></i>
+  </p-button>
+</header>
 
 <nav>
-  <app-sidebar [sidebarVisible]="sidebarVisible()"></app-sidebar>
+  <app-sidebar [(sidebarVisible)]="sidebarVisible"></app-sidebar>
 </nav>
 
 <div id="content">
-  <p-button label=">" (onClick)="sidebarVisible.set(true)"></p-button>
   <router-outlet></router-outlet>
 </div>
 
