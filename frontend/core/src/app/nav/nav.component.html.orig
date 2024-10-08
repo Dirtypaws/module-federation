@@ -1,8 +1,6 @@
 <p-sidebar id="mainNav" #sidebarRef [(visible)]="sidebarVisible">
   <ng-template pTemplate="headless">
-    <p-button pButton [rounded]="true" [link]="true" size="small" [text]="true" (onClick)="sidebarVisible.set(false)">
-      <i id="nav-close" class="pi pi-times-circle"></i>
-    </p-button>
+<<<<<<< HEAD
     <p-accordion expandIcon="pi pi-plus" collapseIcon="pi pi-minus">
       <p-accordionTab>
         <ng-template pTemplate="header">
@@ -30,5 +28,12 @@
         </ul>
       </li>
     </ul> -->
+=======
+    <div nav-header>
+      <p-button pButton [rounded]="true" [link]="true" size="small" [text]="true" (onClick)="sidebarVisible.set(false)">
+        <i id="nav-close" class="pi pi-times-circle"></i>
+      </p-button>
+    </div>
+>>>>>>> 40718315a1fe688e60cac000e1c1bfc45d55dec1
   </ng-template>
 </p-sidebar>

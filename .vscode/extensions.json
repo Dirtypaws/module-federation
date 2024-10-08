@@ -1,5 +1,6 @@
 {
   "recommendations": [
+    "yigitfindikli.primengsnippets",
     "ms-azuretools.vscode-azurefunctions",
     "johnpapa.Angular2",
     "Angular.ng-template",

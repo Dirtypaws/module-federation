@@ -1,5 +1,9 @@
 <header>
+<<<<<<< HEAD
+  <p-button [text]="true" (onClick)="openSidebar(sidebarVisible())">
+=======
   <p-button pButton pRipple [link]="true" [text]="true" (onClick)="sidebarVisible.set(true)">
+>>>>>>> 40718315a1fe688e60cac000e1c1bfc45d55dec1
     <i class="pi pi-bars"></i>
   </p-button>
 </header>

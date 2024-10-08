@@ -28,5 +28,9 @@
     "**/node_modules": false,
     "**/dist": true
   },
+<<<<<<< HEAD
+  "cSpell.words": ["Openapi", "primeicons"]
+=======
   "cSpell.words": ["Openapi", "primeicons", "primeng"]
+>>>>>>> 40718315a1fe688e60cac000e1c1bfc45d55dec1
 }

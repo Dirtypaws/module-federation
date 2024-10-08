@@ -3,12 +3,16 @@
 @import 'primeng/resources/primeng.css';
 @import 'primeng/resources/themes/aura-light-noir/theme.css';
 @import 'primeicons/primeicons.css';
+<<<<<<< HEAD
 
 $header-gutter: 3rem;
+=======
+>>>>>>> 40718315a1fe688e60cac000e1c1bfc45d55dec1
 
 body {
   margin: 0;
-  background-color: var(--surface-ground);
+<<<<<<< HEAD
+  background-color: var(--bluegray-50);
 }
 
 header {
@@ -36,4 +40,7 @@ header {
 
 .hidden {
   display: none;
+=======
+  background-color: var(--surface-ground);
+>>>>>>> 40718315a1fe688e60cac000e1c1bfc45d55dec1
 }
