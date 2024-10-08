@@ -1,34 +1,30 @@
 <p-sidebar id="mainNav" #sidebarRef [(visible)]="sidebarVisible">
   <ng-template pTemplate="headless">
-    <p-button pButton [rounded]="true" [link]="true" size="small" [text]="true" (onClick)="sidebarVisible.set(false)">
-      <i id="nav-close" class="pi pi-times-circle"></i>
-    </p-button>
+    <div class="close-container">
+      <p-button
+        pButton
+        styleClass="close-btn"
+        [rounded]="true"
+        [link]="true"
+        [text]="true"
+        (onClick)="sidebarVisible.set(false)"
+      >
+        <i id="nav-close" class="pi pi-times-circle"></i>
+      </p-button>
+    </div>
     <p-accordion expandIcon="pi pi-plus" collapseIcon="pi pi-minus">
-      <p-accordionTab>
+      <p-accordionTab class="nav-container">
         <ng-template pTemplate="header">
           <span class="font-medium">FAVORITES</span>
         </ng-template>
         <ng-template pTemplate="content">
-          <a routerLink="/home">Home</a>
+          <ul class="application-links list-none">
+            <li>
+              <a class="p-accordion-header-link" role="button" routerLink="/home">Home</a>
+            </li>
+          </ul>
         </ng-template>
       </p-accordionTab>
-      <!-- <p-accordionTab header="header">
-        your content
-      </p-accordionTab>
-      <p-accordionTab header="header">
-        your content
-      </p-accordionTab> -->
     </p-accordion>
-    <!-- <ul class="list-none">
-      <li>
-        <a [href]="" (click)="expand('#subNav')" data-link="abc">
-          <span class="font-medium">FAVORITES</span>
-          <i class="pi pi-chevron-down"></i>
-        </a>
-        <ul #subNav class="list-none hidden">
-          <li>Home</li>
-        </ul>
-      </li>
-    </ul> -->
   </ng-template>
 </p-sidebar>

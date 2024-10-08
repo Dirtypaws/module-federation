@@ -4,31 +4,19 @@
 @import 'primeng/resources/themes/aura-light-noir/theme.css';
 @import 'primeicons/primeicons.css';
 
-$header-gutter: 3rem;
+$header-gutter: 4rem;
 $background: var(--surface-ground);
 
 body {
   margin: 0;
-  background-color: var(--surface-ground);
-}
-
-header {
-  display: flex;
-  flex-flow: row wrap;
-  background: var(--bluegray-100);
-  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
-  height: $header-gutter;
-  i {
-    font-weight: 500;
-    font-size: 2rem;
-  }
+  background-color: $background;
 }
 
 .p-sidebar-left {
   top: $header-gutter;
   left: 0;
   width: 18rem;
-  box-shadow: 0.2rem 0px 0px 0px rgba(0, 0, 0, 0.5);
+  //box-shadow: 0.2rem 0px 0px 0px rgba(0, 0, 0, 0.5);
 }
 
 .p-sidebar-mask {
