@@ -1,0 +1,16 @@
+ul {
+  &.list-none {
+    list-style-type: none;
+  }
+  li {
+    button,
+    a {
+      cursor: pointer !important;
+      align-items: center;
+      justify-content: space-between;
+      display: flex;
+      padding: 1rem 1rem 0 0;
+      font-weight: 500;
+    }
+  }
+}

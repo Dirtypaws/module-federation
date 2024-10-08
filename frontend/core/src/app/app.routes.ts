@@ -34,6 +34,12 @@ export function getManifest(): CustomManifest {
       displayName: 'Admin',
       routePath: 'admin',
       version: '0.0.1-alpha',
+      navigationRoutes: [
+        {
+          path: '/reports',
+          display: 'Reports',
+        },
+      ],
     },
   };
 }

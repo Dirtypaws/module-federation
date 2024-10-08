@@ -1,4 +1,4 @@
-import { Component, model } from '@angular/core';
+import { Component, model, viewChild } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,6 +12,10 @@ export class NavComponent {
    *
    */
   constructor() {}
+
+  expand($event: any) {
+    console.log('evt', $event);
+  }
 
   close(): void {
     this.sidebarVisible.set(false);

@@ -4,7 +4,6 @@ import { getManifest } from './app.routes';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   sidebarVisible = signal(false);
@@ -19,5 +18,9 @@ export class AppComponent {
         display: entry.displayName,
       });
     });
+  }
+
+  openSidebar(state: boolean): void {
+    this.sidebarVisible.set(!state);
   }
 }
