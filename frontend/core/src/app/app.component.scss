@@ -6,16 +6,13 @@ header {
   flex-flow: row wrap;
   background: $header-edge;
   background: linear-gradient(180deg, $header-edge 5%, $header-color 40%, $header-edge 95%);
-  border-bottom: 1px solid var(--surface-400);
-  box-shadow: 0px 3px 8px 2px $header-edge;
+  //border-bottom: 1px solid var(--surface-400);
+  box-shadow: 0px 0px 8px 2px $header-edge;
   height: 4rem;
   i {
-    font-size: 2rem !important;
+    font-size: 2rem;
   }
 }
-
-nav {
-  button:hover {
-    background: none;
-  }
+#nav-close {
+  font-size: 1.5rem;
 }

@@ -1,8 +1,8 @@
 <p-sidebar #sidebarRef [(visible)]="sidebarVisible">
   <ng-template pTemplate="headless">
     <div nav-header>
-      <p-button pRipple pButton [rounded]="true" size="large" [text]="true">
-        <i class="pi pi-times-circle"></i>
+      <p-button pButton [rounded]="true" [link]="true" size="small" [text]="true" (onClick)="sidebarVisible.set(false)">
+        <i id="nav-close" class="pi pi-times-circle"></i>
       </p-button>
     </div>
   </ng-template>
