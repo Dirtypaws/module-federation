@@ -22,6 +22,8 @@ export type NavigationPath = {
 export type CustomRemoteConfig = RemoteConfig & {
   /*** The unique identifier of the application */
   id: string;
+  /*** The name of the header section */
+  displayName: string;
   /*** A list of paths the hub application should render */
   navigationRoutes: NavigationPath[];
   /*** The entryPoint module */

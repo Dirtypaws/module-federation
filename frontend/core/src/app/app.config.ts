@@ -1,8 +1,17 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { CustomManifest } from './app.routes.definition';
+import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
-import { buildRoutes } from './app.routes';
+@Injectable({
+  providedIn: 'root',
+})
+export class AppConfig {
+  manifest: CustomManifest | undefined;
+  static initializeManifest: Function;
 
-export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(buildRoutes())],
-};
+  constructor(private router: Router) {
+    console.log(router);
+  }
+}
