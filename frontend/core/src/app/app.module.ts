@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
 import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
-import { RouterModule } from '@angular/router';
+import { provideRouter, RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavComponent } from './nav/nav.component';
 import { AccordionModule } from 'primeng/accordion';
 import { ManifestService } from './manifest.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { staticRoutes } from './app.routes';
 
 function initializeApp(manifestService: ManifestService) {
   return (): Promise<any> => {
@@ -30,6 +31,7 @@ function initializeApp(manifestService: ManifestService) {
   ],
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(staticRoutes),
     provideHttpClient(withInterceptorsFromDi()),
     ManifestService,
     {

@@ -1,6 +1,7 @@
 import { Component, model } from '@angular/core';
 import { CustomRemoteConfig } from '../app.routes.definition';
 import { ManifestService } from '../manifest.service';
+import { Application, NavLink } from './nav.component.definition';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,18 +10,41 @@ import { ManifestService } from '../manifest.service';
 })
 export class NavComponent {
   sidebarVisible = model.required<boolean>();
-  applications: CustomRemoteConfig[] = [];
+  applications;
 
   /**
    *
    */
-  constructor(private routeService: ManifestService) {
-    const manifest = Object.keys(routeService).manifest ?? {};
-    for (const route in manifest) {
-      this.applications.push({
-        displayName = manifest,
-      });
-    }
+  constructor(routeService: ManifestService) {
+    this.applications = Object.keys(routeService.manifest ?? {}).map((key) => {
+      if (routeService.manifest && routeService.manifest[key.toString()]) {
+        const entry = routeService.manifest[key];
+        console.log(entry);
+        return {
+          header: entry.displayName,
+          links: entry.navigationRoutes.map((link) => {
+            return {
+              displayName: link.display,
+              routerLink: `/${entry.routePath}${link.path}`,
+            };
+          }),
+        };
+      }
+      return;
+    });
+    //   if () {
+    //     const entry = routeService.manifest[key];
+    //     this.applications.push({
+    //       header: entry.displayName,
+    //       links: entry.navigationRoutes.map((link) => {
+    //         return {
+    //           displayName: link.display,
+    //           routerLink: `/${entry.routePath}${link.path}`,
+    //         };
+    //       }),
+    //     });
+    //   }
+    // }
   }
 
   expand($event: any) {

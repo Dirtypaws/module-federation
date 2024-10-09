@@ -13,16 +13,16 @@
       </p-button>
     </div>
     <p-accordion expandIcon="pi pi-plus" collapseIcon="pi pi-minus">
-      @for (app of applications; track app.id) {
+      @for (app of applications; track app?.header) {
       <p-accordionTab class="nav-container">
         <ng-template pTemplate="header">
-          <span class="font-medium">{{ app.displayName }}</span>
+          <span class="font-medium">{{ app?.header }}</span>
         </ng-template>
-        @for (link of app.navigationRoutes; track link.path) {
+        @for (link of app?.links; track link.routerLink) {
         <ng-template pTemplate="content">
           <ul class="application-links list-none">
             <li>
-              <a class="p-accordion-header-link" role="button" [routerLink]="link.path">{{ link.display }}</a>
+              <a class="p-accordion-header-link" role="button" [routerLink]="link.routerLink">{{ link.displayName }}</a>
             </li>
           </ul>
         </ng-template>
