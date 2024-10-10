@@ -91,28 +91,28 @@
         }
       }
     },
-    "versions": {
+    "admin": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
         }
       },
-      "root": "versions",
-      "sourceRoot": "versions/src",
+      "root": "admin",
+      "sourceRoot": "admin/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-architects/native-federation:build",
           "options": {
-            "target": "versions:esbuild:production",
+            "target": "admin:esbuild:production",
             "polyfills": []
           }
         },
         "serve": {
           "builder": "@angular-architects/native-federation:build",
           "options": {
-            "target": "versions:serve-original:development",
+            "target": "admin:serve-original:development",
             "rebuildDelay": 0,
             "dev": true
           }
@@ -120,25 +120,25 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "versions:build"
+            "buildTarget": "admin:build"
           }
         },
         "esbuild": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/versions",
-            "index": "versions/src/index.html",
+            "outputPath": "dist/admin",
+            "index": "admin/src/index.html",
             "polyfills": ["zone.js", "es-module-shims"],
-            "tsConfig": "versions/tsconfig.app.json",
+            "tsConfig": "admin/tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "versions/public"
+                "input": "core/public"
               }
             ],
-            "styles": ["versions/src/styles.scss"],
+            "styles": ["admin/src/styles.scss"],
             "scripts": [],
-            "browser": "versions/src/main.ts"
+            "browser": "admin/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -169,10 +169,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "versions:esbuild:production"
+              "buildTarget": "admin:esbuild:production"
             },
             "development": {
-              "buildTarget": "versions:esbuild:development",
+              "buildTarget": "admin:esbuild:development",
               "port": 4201
             }
           },
@@ -180,7 +180,7 @@
         }
       }
     }
-  },
+    },
   "cli": {
     "analytics": false,
     "packageManager": "yarn"

@@ -22,8 +22,8 @@ export class ManifestService {
             version: '0.0.1-alpha',
             navigationRoutes: [
               {
-                path: '/reports',
-                display: 'Reports',
+                path: '/versions',
+                display: 'Application Versions',
               },
             ],
           },

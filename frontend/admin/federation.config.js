@@ -4,7 +4,7 @@ module.exports = withNativeFederation({
   name: 'admin',
 
   exposes: {
-    './Module': './versions/src/app/main/main.module.ts',
+    './Module': './versions/src/app/entry/entry.module.ts',
   },
 
   shared: {
