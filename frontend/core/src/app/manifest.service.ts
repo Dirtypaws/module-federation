@@ -15,7 +15,7 @@ export class ManifestService {
             remoteEntry: 'http://localhost:4201/remoteEntry.js',
             type: 'module',
             id: '35c3a5d1-f0bf-41ef-ab0c-b77296721727',
-            ngModuleName: 'MainModule',
+            ngModuleName: 'EntryModule',
             exposedModule: './Module',
             displayName: 'Admin',
             routePath: 'admin',
