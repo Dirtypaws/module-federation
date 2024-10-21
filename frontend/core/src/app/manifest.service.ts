@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { provideRouter, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CustomManifest } from './app.routes.definition';
 import { buildRoutes } from './app.routes';
 

@@ -19,6 +19,7 @@
     "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
     "*.jsx": "${capture}.js",
     "*.tsx": "${capture}.ts",
+    "appsettings.json": "appsettings.*.json",
     "tsconfig.json": "tsconfig.*.json",
     "package.json": "package-lock.json, yarn.lock"
   },
@@ -26,7 +27,26 @@
   "files.exclude": {
     "**/coverage": true,
     "**/node_modules": false,
-    "**/dist": true
+    "**/dist": true,
+    "**/bin": true,
+    "**/obj": true,
+    "**/net*": true
   },
-  "cSpell.words": ["Openapi", "primeicons", "primeng"]
+  "cSpell.words": ["Openapi", "primeicons", "primeng"],
+  "dotnet.defaultSolution": "core.sln",
+  "yaml.customTags": [
+    "!Equals sequence",
+    "!FindInMap sequence",
+    "!GetAtt",
+    "!GetAZs",
+    "!ImportValue",
+    "!Join sequence",
+    "!Ref",
+    "!Select sequence",
+    "!Split sequence",
+    "!Sub"
+  ],
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/lalcebo/json-schema/master/serverless/reference.json": "file:///c%3A/Users/matth/code/ModuleFederation/services/Core/src/serverless.yml"
+  }
 }

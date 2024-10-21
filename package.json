@@ -10,5 +10,8 @@
   "license": "MIT",
   "devDependencies": {
     "@angular/cli": "^18.2.6"
+  },
+  "dependencies": {
+    "serverless": "^4.4.6"
   }
 }

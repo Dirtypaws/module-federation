@@ -4,6 +4,8 @@
     "ms-azuretools.vscode-azurefunctions",
     "johnpapa.Angular2",
     "Angular.ng-template",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "ms-dotnettools.csharp",
+    "ms-dotnettools.csdevkit"
   ]
 }
