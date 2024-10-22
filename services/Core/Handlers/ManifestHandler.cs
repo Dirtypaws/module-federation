@@ -1,4 +1,3 @@
-using System;
 using Core.Helpers;
 using System.Net;
 
@@ -13,11 +12,11 @@ public static class ManifestHandler
   }
   public static async Task Get(HttpContext context)
   {
-    await context.WriteResponse(HttpStatusCode.NotImplemented);
+    await context.NotImplemented();
   }
 
   public static async Task Put(HttpContext context)
   {
-    await context.WriteResponse(HttpStatusCode.NotImplemented);
+    await context.NotImplemented();
   }
 }

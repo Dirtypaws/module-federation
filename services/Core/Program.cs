@@ -1,4 +1,5 @@
 using Core.Handlers;
+using Core.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,17 @@ app.UseAuthorization();
 app.MapGet("/", () => "Welcome to running ASP.NET Core Minimal API on AWS Lambda");
 
 // TODO: AutoGenerate this from OpenAPI
-app.MapGet("/manifest", () => ManifestHandler.Get);
-app.MapPut("/manifest", () => ManifestHandler.Put);
+app.MapGet("/manifest", async (HttpContext context) => {
+  try { await ManifestHandler.Get(context); }
+  catch(Exception ex) {
+    await context.UncaughtException(ex);
+  }
+  });
+app.MapPut("/manifest", async (HttpContext context) => {
+  try { await ManifestHandler.Put(context); }
+  catch(Exception ex) {
+    await context.UncaughtException(ex);
+  }
+  });
 
 app.Run();
