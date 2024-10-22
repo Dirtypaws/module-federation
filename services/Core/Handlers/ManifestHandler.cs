@@ -12,11 +12,11 @@ public static class ManifestHandler
   }
   public static async Task Get(HttpContext context)
   {
-    await context.NotImplemented();
+    throw new NotImplementedException();
   }
 
   public static async Task Put(HttpContext context)
   {
-    await context.NotImplemented();
+    throw new NotImplementedException();
   }
 }
