@@ -6,6 +6,7 @@
     "Angular.ng-template",
     "esbenp.prettier-vscode",
     "ms-dotnettools.csharp",
-    "ms-dotnettools.csdevkit"
+    "ms-dotnettools.csdevkit",
+    "fernandoescolar.vscode-solution-explorer"
   ]
 }
