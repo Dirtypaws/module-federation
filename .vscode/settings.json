@@ -1,18 +1,11 @@
 {
-  "azureFunctions.deploySubpath": "services\\core",
-  "azureFunctions.postDeployTask": "npm install (functions)",
-  "azureFunctions.projectLanguage": "TypeScript",
-  "azureFunctions.projectRuntime": "~4",
   "debug.internalConsoleOptions": "neverOpen",
-  "azureFunctions.projectLanguageModel": 4,
-  "azureFunctions.preDeployTask": "npm prune (functions)",
   "editor.detectIndentation": true,
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.snippetSuggestions": "top",
-  "jestTestExplorer.flattenExplorer": true,
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     "*.ts": "${capture}.ts, ${capture}.definition.ts, ${capture}.spec.ts, ${capture}.spec.mock.ts",
@@ -45,8 +38,5 @@
     "!Select sequence",
     "!Split sequence",
     "!Sub"
-  ],
-  "yaml.schemas": {
-    "https://raw.githubusercontent.com/lalcebo/json-schema/master/serverless/reference.json": "file:///c%3A/Users/matth/code/ModuleFederation/services/Core/src/serverless.yml"
-  }
+  ]
 }

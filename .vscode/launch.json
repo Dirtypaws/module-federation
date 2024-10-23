@@ -8,6 +8,17 @@
       "restart": true,
       "port": 9229,
       "preLaunchTask": "func: host start"
+    },
+    {
+      "name": "Core Api",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "<home-directory>/.dotnet/tools/dotnet-lambda-test-tool-8.0.exe",
+      "args": [],
+      "cwd": "${workspaceFolder}/services/Core",
+      "console": "internalConsole",
+      "stopAtEntry": false,
+      "internalConsoleOptions": "openOnSessionStart"
     }
   ]
 }
