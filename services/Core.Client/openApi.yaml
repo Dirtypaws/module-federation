@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  title: module-federation/core
+  contact:
+    email: matthewkrizanac@gmail.com
+  license:
+    name: MIT
+  version: 1.0.0
+servers:
+  - url: http://localhost:5227
+paths:
+  /manifest:
+    get:
+      tags:
+        - Manifest
+      summary: Current application Manifest
+      description: Fetches the current application manifest
+      operationId: Get
+      responses:
+        '200':
+          description: Result when the application manifest has been retrieved, the body will contain the current application manifest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManifestDto'
+components:
+  schemas:
+    ManifestDto:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/ManifestDefinitionDto'
+    NavigationDto:
+      additionalProperties: false
+      type: object
+      required:
+        - path
+        - display
+      properties:
+        path:
+          type: string
+        display:
+          type: string
+    ManifestDefinitionDto:
+      additionalProperties: false
+      type: object
+      required:
+        - remoteEntry
+        - type
+        - id
+        - ngModuleName
+        - exposedModule
+        - displayName
+        - routePath
+        - version
+        - navigationRoutes
+      properties:
+        remoteEntry:
+          type: string
+        type:
+          type: string
+          enum:
+            - module
+            - component
+        id:
+          type: string
+        ngModuleName:
+          type: string
+        exposedModule:
+          type: string
+        displayName:
+          type: string
+        routePath:
+          type: string
+        version:
+          type: string
+        navigationRoutes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NavigationDto'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
