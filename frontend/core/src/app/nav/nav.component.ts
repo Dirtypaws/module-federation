@@ -15,10 +15,10 @@ export class NavComponent {
   /**
    *
    */
-  constructor(routeService: ManifestService) {
-    this.applications = Object.keys(routeService.manifest ?? {}).map((key) => {
-      if (routeService.manifest && routeService.manifest[key.toString()]) {
-        const entry = routeService.manifest[key];
+  constructor(manifestService: ManifestService) {
+    this.applications = Object.keys(manifestService.manifest ?? {}).map((key) => {
+      if (manifestService.manifest && manifestService.manifest[key.toString()]) {
+        const entry = manifestService.manifest[key];
         console.log(entry);
         return {
           header: entry.displayName,
