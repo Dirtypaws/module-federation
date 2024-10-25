@@ -1,17 +1,25 @@
+using System.Text.Json;
 using Core.Controllers;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
 builder.Services.ConfigureHttpJsonOptions(static options =>
 {
+    options.SerializerOptions.IncludeFields = true;
+    options.SerializerOptions.PropertyNameCaseInsensitive = true;
+    options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
+});
+
+builder.Logging.ClearProviders();
+builder.Logging.AddJsonConsole(options => {
+    options.IncludeScopes = true;
+    options.UseUtcTimestamp = true;
+    options.TimestampFormat  = "hh:mm:ss";
 });
 
 var app = builder.Build();
 
-// app.MapGet("/todos", async () => { return await TodosController.Get(); });
-// app.MapGet("/todos/{id}", async (int id) => { return await TodosController.Get(id); });
-
-app.MapGet("/manifest", async () => { await ManifestController.Get(); });
+app.MapGet("/manifest", async () => { return await ManifestController.Get(); });
 
 app.Run();
