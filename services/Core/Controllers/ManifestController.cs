@@ -3,7 +3,7 @@ using Core.Models;
 
 namespace Core.Controllers;
 
-public class ManifestController
+public static class ManifestController
 {
   public static async Task<IResult> Get() 
   {
