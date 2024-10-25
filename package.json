@@ -3,15 +3,13 @@
   "version": "0.0.1-alpha",
   "description": "A sample project",
   "scripts": {
-    "run": "ng serve core -o & ng serve versions",
+    "run:all": "concurrently \"cd frontend && yarn start:all\" \"cd services && yarn start:all\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@angular/cli": "^18.2.6"
-  },
-  "dependencies": {
-    "serverless": "^4.4.6"
+    "@angular/cli": "^18.2.6",
+    "concurrently": "^9.0.1"
   }
 }
