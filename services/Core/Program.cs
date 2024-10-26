@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Core.Controllers;
 using Core.Internal.Models;
+using Core.Program;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
@@ -29,6 +30,6 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
-app.MapGet("/manifest", async () => { return await ManifestController.Get(); });
+app.UseManifestController();
 
 app.Run();

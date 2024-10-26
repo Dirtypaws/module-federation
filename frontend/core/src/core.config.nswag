@@ -12,7 +12,7 @@
   "codeGenerators": {
     "openApiToTypeScriptClient": {
       "disallowAdditionalPropertiesIfNotPresent": true,
-      "className": "{controller}Service",
+      "className": "{controller}Client",
       "moduleName": "",
       "namespace": "",
       "typeScriptVersion": 4.3,

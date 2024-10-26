@@ -1,4 +1,6 @@
 *.orig
+/**/core.g.cs
+/**/generated.cs
 
 # Logs
 logs
