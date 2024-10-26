@@ -1,5 +1,6 @@
 *.orig
 /**/core.g.cs
+/**/IManifestApi.cs
 /**/generated.cs
 
 # Logs
