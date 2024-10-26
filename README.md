@@ -19,6 +19,7 @@ This is a sample project show casing an Angular application utilizing module fed
 - Execute a `yarn` install
 - Navigate to `/services`
 - Execute a `dotnet restore` to restore nuget packages for the solution
+- Execute `dotnet tool install --global Refitter` a tool for generating the refit client
 - Navigate back to the root directory
 - Execute a `yarn run:all`
 - Open a browser to `localhost:4200`
