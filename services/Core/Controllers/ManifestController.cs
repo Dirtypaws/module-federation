@@ -4,6 +4,11 @@ namespace Core.Controllers;
 
 public static class ManifestController
 {
+
+  static ManifestController()
+  {
+    // TODO: Inject Data Access layer and event handlers here
+  }
   public static async Task<IResult> Get() 
   {
     // TODO: Get from Db
