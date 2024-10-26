@@ -14,6 +14,7 @@ This is a sample project show casing an Angular application utilizing module fed
 
 - Navigate to the repository root
 - Execute a `yarn` install
+- Execute a `yarn generate` to generate the ApiModels and Services from the OpenApi spec
 - Navigate to `/frontend`
 - Execute a `yarn` install
 - Navigate to `/services`
