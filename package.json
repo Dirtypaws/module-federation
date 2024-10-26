@@ -4,12 +4,14 @@
   "description": "A sample project",
   "scripts": {
     "run:all": "concurrently \"cd frontend && yarn start:all\" \"cd services && yarn start:all\"",
+    "generate": "concurrently \"npx nswag run services/Core.Client/config.nswag\" \"npx nswag run frontend/core/src/core.config.nswag\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "@angular/cli": "^18.2.6",
-    "concurrently": "^9.0.1"
+    "concurrently": "^9.0.1",
+    "nswag": "^14.1.0"
   }
 }

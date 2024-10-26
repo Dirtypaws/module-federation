@@ -1218,6 +1218,11 @@ npm-registry-fetch@^17.0.0:
     npm-package-arg "^11.0.0"
     proc-log "^4.0.0"
 
+nswag@^14.1.0:
+  version "14.1.0"
+  resolved "https://registry.yarnpkg.com/nswag/-/nswag-14.1.0.tgz#5c8d8f2979d8e05308605330795264f4321de5d2"
+  integrity sha512-Jvsdq/lZiIxuGJujNcuU2zRC9CAyCc9BXL2+rCVhIrBkTd6TKtc6szuolt0QegulQ86J8Ta4uyB4N/CL2P1gmw==
+
 onetime@^5.1.0:
   version "5.1.2"
   resolved "https://registry.npmjs.org/onetime/-/onetime-5.1.2.tgz"

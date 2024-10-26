@@ -19,13 +19,13 @@
   "explorer.fileNesting.expand": true,
   "files.exclude": {
     "**/coverage": true,
-    "**/node_modules": false,
+    "**/node_modules": true,
     "**/dist": true,
     "**/bin": true,
     "**/obj": true,
     "**/net*": true
   },
-  "cSpell.words": ["luxon", "Newtonsoft", "Openapi", "primeicons", "primeng"],
+  "cSpell.words": ["luxon", "Newtonsoft", "nswag", "Openapi", "primeicons", "primeng"],
   "dotnet.defaultSolution": "core.sln",
   "yaml.customTags": [
     "!Equals sequence",
