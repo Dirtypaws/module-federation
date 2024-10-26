@@ -4,4 +4,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Refit" Version="7.2.1" />
+    <PackageReference Include="Refitter.SourceGenerator" Version="1.4.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Services\core.g.cs" />
+    <Content Remove="Services\core.g.cs" />
+  </ItemGroup>
+
 </Project>
