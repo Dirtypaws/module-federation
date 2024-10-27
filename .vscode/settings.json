@@ -15,7 +15,8 @@
     "Program.cs": "*.Program.g.cs",
     "appsettings.json": "appsettings.*.json",
     "tsconfig.json": "tsconfig.*.json",
-    "package.json": "package-lock.json, yarn.lock"
+    "package.json": "package-lock.json, yarn.lock",
+    "*Controller.cs": "I${capture}Controller.g.cs"
   },
   "explorer.fileNesting.expand": true,
   "files.exclude": {
