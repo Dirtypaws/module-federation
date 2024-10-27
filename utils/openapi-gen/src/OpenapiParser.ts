@@ -12,11 +12,21 @@ export async function parseSpec(path: string, outDir: string, language: string, 
     outDir = outDir.slice(0, -1);
   }
   const file = fs.readFileSync(path, 'utf-8');
-  const { paths } = yaml.load(file) as Record<string, { [key: string]: { [key: string]: { operationId: string } } }>;
+  const { paths } = yaml.load(file) as Record<
+    string,
+    { [key: string]: { [key: string]: { operationId: string; tags: string[] } } }
+  >;
 
   const pathArray = Object.entries(paths);
   pathArray.forEach(([path, verbs]) => {
     const verbArray = Object.entries(verbs);
+    if (language === 'cs') {
+      Dotnet.registerProgram(
+        project,
+        path,
+        verbArray.flatMap(([key]) => key),
+      );
+    }
     verbArray.forEach(([verb, definition]) => {
       if (!definition.operationId) {
         return;
@@ -27,7 +37,7 @@ export async function parseSpec(path: string, outDir: string, language: string, 
           processTypescriptEndpoints(outDir, definition.operationId, verb);
           break;
         case 'cs':
-          processDotnetEndpoints(path, outDir, definition.operationId, project);
+          processDotnetEndpoints(definition.tags[0], outDir, definition.operationId, project);
           break;
         default:
           break;
@@ -44,7 +54,7 @@ function processTypescriptEndpoints(outDir: string, operationId: string, verb: s
 }
 
 function processDotnetEndpoints(path: string, outDir: string, operationId: string, project: string) {
-  const controller = `${path.slice(1, path.length).charAt(0).toUpperCase() + path.slice(2)}Controller`;
+  const controller = `${path}Controller`;
 
   Dotnet.createController(controller, operationId, outDir, project);
 }

@@ -1,6 +1,6 @@
 using System.Text.Json;
+using Core;
 using Core.Internal.Models;
-using Core.Program;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 

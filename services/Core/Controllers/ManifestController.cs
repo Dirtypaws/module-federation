@@ -2,14 +2,15 @@ using Core.Client.Models;
 
 namespace Core.Controllers;
 
-public static class ManifestController
+public class ManifestController : IManifestController
 {
 
-  static ManifestController()
+  public ManifestController()
   {
     // TODO: Instantiate Data Access layer and event handlers here
   }
-  public static async Task<IResult> Get() 
+
+  public async Task<IResult> Get() 
   {
     // TODO: Get from Db
     var result = new Dictionary<string, ManifestDefinitionDto>() {
