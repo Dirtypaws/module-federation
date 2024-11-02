@@ -1,0 +1,13 @@
+{
+  "name": "core_ruby",
+  "version": "0.0.1",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.15.3",
+    "node-fetch": "2.6.1",
+    "openapi-gen": "file:../../utils/openapi-gen",
+    "serverless": "^4.4.7",
+    "serverless-offline": "^14.3.3"
+  }
+}

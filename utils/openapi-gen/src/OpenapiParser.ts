@@ -33,6 +33,9 @@ export async function parseSpec(path: string, outDir: string, language: string, 
       }
 
       switch (language) {
+        case 'ruby':
+          processRubyEndpoints(outDir, definition.operationId, verb);
+          break;
         case 'ts':
           processTypescriptEndpoints(outDir, definition.operationId, verb);
           break;
@@ -58,3 +61,5 @@ function processDotnetEndpoints(path: string, outDir: string, operationId: strin
 
   Dotnet.createController(controller, operationId, outDir, project);
 }
+
+function processRubyEndpoints(outDir: string, operationId: string, verb: string) {}
