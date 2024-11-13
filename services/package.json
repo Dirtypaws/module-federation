@@ -5,6 +5,6 @@
   "license": "MIT",
   "scripts": {
     "start:all": "yarn start:core",
-    "start:core": "cd Core && dotnet watch run --project Core.csproj"
+    "start:core": "cd core && sls offline"
   }
 }
