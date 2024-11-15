@@ -1,0 +1,21 @@
+type Manifest {
+  remoteEntry: String!
+  type: ManifestDefinitionType!
+  id: ID!
+  ngModuleName: String!
+  exposedModule: String!
+  displayName: String!
+  routePath: String!
+  version: String
+  navigationRoutes: [Navigation]!
+}
+
+enum ManifestDefinitionType {
+  Module
+  Component
+}
+
+type Navigation {
+  path: string
+  display: string
+}
