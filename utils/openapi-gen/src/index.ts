@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import figlet from 'figlet';
 import path from 'path';
-import { parseSpec } from './OpenapiParser';
+import { parseSpec } from './OpenApiParser';
 
 const program = new Command();
 

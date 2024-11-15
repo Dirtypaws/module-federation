@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
-import { writeFunctionHandler } from './ts/EndpointCreator';
+import { OpenAPI3, PathItemObject, PathsObject } from 'openapi-typescript';
 import { Dotnet } from './cs/dotnet';
 
 export async function parseSpec(path: string, outDir: string, language: string, project: string): Promise<void> {
@@ -12,49 +12,50 @@ export async function parseSpec(path: string, outDir: string, language: string, 
     outDir = outDir.slice(0, -1);
   }
   const file = fs.readFileSync(path, 'utf-8');
-  const { paths } = yaml.load(file) as Record<
-    string,
-    { [key: string]: { [key: string]: { operationId: string; tags: string[] } } }
-  >;
+  const spec = yaml.load(file) as OpenAPI3;
+  if (!spec) {
+    throw Error('The supplied openapi spec was not in the proper format');
+  }
 
-  const pathArray = Object.entries(paths);
-  pathArray.forEach(([path, verbs]) => {
-    const verbArray = Object.entries(verbs);
-    if (language === 'cs') {
-      Dotnet.registerProgram(
-        project,
-        path,
-        verbArray.flatMap(([key]) => key),
-      );
-    }
-    verbArray.forEach(([verb, definition]) => {
-      if (!definition.operationId) {
-        return;
-      }
+  switch (language) {
+    case 'ts':
+      processTypescriptEndpoints(spec, outDir);
+      break;
+    case 'cs':
+      processDotnetEndpoints(spec, outDir, project);
+      break;
+    default:
+      console.log('The supplied language is not supported');
+      break;
+  }
+}
 
-      switch (language) {
-        case 'ts':
-          processTypescriptEndpoints(outDir, definition.operationId, verb);
-          break;
-        case 'cs':
-          processDotnetEndpoints(definition.tags[0], outDir, definition.operationId, project);
-          break;
-        default:
-          break;
-      }
+function processTypescriptEndpoints(spec: OpenAPI3, outDir: string) {
+  const pathObject = spec.paths as PathsObject;
+  const paths = Object.keys(pathObject);
+  if (!paths) {
+    throw new Error('Paths could not be parsed from the OpenApi spec');
+  }
+
+  paths.forEach((path) => {
+    const pathItem = pathObject[path] as PathItemObject;
+    const verbs = Object.entries(pathItem);
+
+    verbs.forEach(([_key, entry]) => {
+      console.log(entry);
     });
   });
 }
 
-function processTypescriptEndpoints(outDir: string, operationId: string, verb: string) {
-  const directory = `${outDir}\\${operationId}`;
-  fs.mkdirSync(directory, { recursive: true });
+function processDotnetEndpoints(spec: OpenAPI3, outDir: string, project: string) {
+  const pathObject = spec.paths as PathsObject;
+  const paths = Object.keys(pathObject);
+  if (!paths) {
+    throw new Error('Paths could not be parsed from the OpenApi spec');
+  }
 
-  writeFunctionHandler(`${directory}\\index.ts`, verb);
-}
-
-function processDotnetEndpoints(path: string, outDir: string, operationId: string, project: string) {
-  const controller = `${path}Controller`;
-
-  Dotnet.createController(controller, operationId, outDir, project);
+  paths.forEach((path) => {
+    const pathItem = pathObject[path] as PathItemObject;
+    Dotnet.buildController(path, pathItem, outDir, project);
+  });
 }
