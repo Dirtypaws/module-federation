@@ -5,9 +5,27 @@ namespace Core.Controllers;
 
 public class ManifestController : IManifestController
 {
-    public Task<IResult> Get()
+    public async Task<IResult> Get()
     {
-        throw new NotImplementedException();
+      // TODO: Get from Db
+      var result = new Dictionary<string, ManifestDefinitionDto>
+      {
+        { 
+          "admin", 
+          new ManifestDefinitionDto(
+            "Admin", 
+            "./Module", 
+            Guid.NewGuid().ToString(), 
+            [new("Application Versions", "/versions")], 
+            "EntryModule", 
+            "http://localhost:4201/remoteEntry.js", 
+            "admin", 
+            ManifestDefinitionDtoType.Module, 
+            "0.0.1-alpha"
+          )
+        }
+      };
+      return Results.Ok(result);
     }
 
     public Task<IResult> Get(string application)
