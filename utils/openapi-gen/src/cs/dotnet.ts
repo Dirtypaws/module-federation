@@ -1,23 +1,108 @@
 import * as fs from 'fs';
-import { OperationObject, PathItemObject } from 'openapi-typescript';
+import { OperationObject, ParameterObject, PathItemObject, PathsObject, SchemaObject } from 'openapi-typescript';
+import { ControllerType } from './dotnet.definition';
 
 export class Dotnet {
-  static buildController(path: string, pathItem: PathItemObject, outDir: string, project: string) {
-    const controller = path.substring(1).charAt(0).toUpperCase() + path.slice(2);
+  static buildControllers(pathsObject: PathsObject, outDir: string, project: string) {
+    const controllers: Record<string, OperationObject[]> = {};
+    Object.entries(pathsObject).forEach((path) => {
+      const pathItem = path[1] as PathItemObject;
+      const pathsItem = Object.entries(pathItem);
 
-    this.generateControllerInterface(controller, pathItem, outDir, project);
-    if (!fs.existsSync(`${outDir}/${controller}Controller.cs`)) {
-      this.generateBaseController(controller, outDir, project);
-    }
+      for (const pathItem in pathsItem) {
+        const operation = pathsItem[pathItem][1] as OperationObject;
+        const controller = operation.operationId?.split('#')[0] ?? '';
+        if (!controllers[controller]) {
+          controllers[controller] = [operation];
+        } else {
+          controllers[controller].push(operation);
+        }
+      }
+    });
 
-    this.registerProgram(path, pathItem, project, controller);
-    if (!fs.existsSync(`./Program.${controller}.ctor.cs`)) {
-      this.buildConstructorFile(project, controller);
+    for (const controller in controllers) {
+      if (Object.prototype.hasOwnProperty.call(controllers, controller)) {
+        this.buildController(controller, controllers[controller], outDir, project);
+      }
     }
+  }
+
+  static registerEndpoints(pathsObject: PathsObject, outDir: string, project: string) {
+    const controllers: ControllerType = {};
+    Object.entries(pathsObject).forEach((pathObject) => {
+      Object.entries(pathObject[1] as PathItemObject).forEach((pathItem) => {
+        const operation = pathItem[1] as OperationObject;
+        const controller = operation.operationId?.split('#')[0] ?? '';
+        if (!controllers[controller]) {
+          controllers[controller] = {};
+        }
+        if (!controllers[controller][pathItem[0]]) {
+          controllers[controller][pathItem[0]] = {
+            path: pathObject[0],
+            operations: [operation],
+          };
+        } else {
+          controllers[controller][pathItem[0]].operations.push(operation);
+        }
+      });
+    });
+
+    Object.keys(controllers).forEach((controller) => {
+      const filePath = `Program.${controller}.g.cs`;
+      let code = `
+using ${project}.Controllers;
+
+namespace ${project};
+
+internal static partial class ${controller}
+{
+  private static readonly IManifestController _controller;
+
+  internal static void Use${controller}Controller(this WebApplication app) 
+  {
+    `;
+      Object.entries(controllers[controller]).forEach(([verb, definition]) => {
+        definition.operations.forEach((element) => {
+          const method = element.operationId?.split('#')[1];
+          if (!method) {
+            throw new Error('Malformed openapi specification');
+          }
+          const params = element.parameters ? (element.parameters as ParameterObject[]) : [];
+          const args = params
+            .map((param) => {
+              const schema = param.schema as SchemaObject;
+              if (schema) {
+                return `${schema.type} ${param.name}`;
+              }
+            })
+            .join(', ');
+
+          code += `app.Map${verb.charAt(0).toUpperCase() + verb.slice(1)}("${
+            definition.path
+          }", async (${args}) => { return await _controller.${method}(${params
+            .map((p) => p.name)
+            .join(', ')}); });\r\n    `;
+        });
+      });
+      code += `
+  }
+}`;
+      fs.writeFileSync(`./${filePath}`, code);
+    });
+  }
+
+  private static buildController(controller: string, operations: OperationObject[], outDir: string, project: string) {
+    this.generateControllerInterface(controller, operations, outDir, project);
+    this.generateBaseController(controller, outDir, project);
+    this.buildConstructorFile(project, controller);
   }
 
   private static generateBaseController(controller: string, outDir: string, project: string) {
     const baseController = `${outDir}/${controller}Controller.cs`;
+    if (fs.existsSync(baseController)) {
+      return;
+    }
+
     let controllerCode = `
 using ${project}.Client.Models;
 
@@ -31,7 +116,7 @@ public class ${controller}Controller : I${controller}Controller
 
   private static generateControllerInterface(
     controller: string,
-    pathItem: PathItemObject,
+    operations: OperationObject[],
     outDir: string,
     project: string,
   ) {
@@ -43,13 +128,22 @@ namespace ${project}.Controllers;
 
 public interface I${controller}Controller
 {`;
-    const verbs = Object.entries(pathItem);
-    verbs.forEach((verb) => {
-      const operation = verb[1] as OperationObject;
-      if (operation.operationId) {
-        interfaceCode += `
-  Task<IResult> ${operation.operationId}();`;
+    operations.forEach((operation) => {
+      const method = operation.operationId?.split('#')[1];
+      if (!method) {
+        throw new Error(`Unable to build interface for operation ${operation.operationId}`);
       }
+      const params = operation.parameters ? (operation.parameters as ParameterObject[]) : [];
+      const args = params
+        .map((param) => {
+          const schema = param.schema as SchemaObject;
+          if (schema) {
+            return `${schema.type} ${param.name}`;
+          }
+        })
+        .join(', ');
+      interfaceCode += `
+  Task<IResult> ${method}(${args});`;
     });
 
     interfaceCode += `
@@ -57,34 +151,10 @@ public interface I${controller}Controller
     fs.writeFileSync(interfaceFile, interfaceCode);
   }
 
-  private static registerProgram(path: string, pathItem: PathItemObject, project: string, controller: string) {
-    const filePath = `Program.${controller}.g.cs`;
-    let code = `
-using ${project}.Controllers;
-
-namespace ${project};
-
-internal static partial class ${controller}
-{
-  private static readonly IManifestController _controller;
-
-  internal static void Use${controller}Controller(this WebApplication app) {
-    `;
-    const verbs = Object.entries(pathItem);
-    verbs.forEach((verb) => {
-      const method = verb[0].charAt(0).toUpperCase() + verb[0].slice(1);
-      const definition = verb[1] as OperationObject;
-      if (definition) {
-        code += `app.Map${method}("${path}", async () => { return await _controller.${definition.operationId}(); });`;
-      }
-    });
-    code += `
-  }
-}`;
-    fs.writeFileSync(`./${filePath}`, code);
-  }
-
   private static buildConstructorFile(project: string, controller: string) {
+    if (fs.existsSync(`./Program.${controller}.ctor.cs`)) {
+      return;
+    }
     const filePath = `Program.${controller}.ctor.cs`;
     let code = `
 using ${project}.Controllers;

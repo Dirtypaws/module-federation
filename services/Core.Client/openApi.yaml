@@ -15,14 +15,35 @@ paths:
         - Manifest
       summary: Current application Manifest
       description: Fetches the current application manifest
-      operationId: Get
+      operationId: Manifest#Get
       responses:
         '200':
-          description: Result when the application manifest has been retrieved, the body will contain the current application manifest
+          description: The application manifest has been retrieved, the body will contain the current application manifest
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ManifestDto'
+  /manifest/{application}:
+    get:
+      tags:
+        - Manifest
+      summary: Current application Manifest
+      description: Fetches the specified application manifest
+      operationId: Manifest#Get
+      parameters:
+        - name: application
+          in: path
+          description: A manifest application
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The application manifest definition has been retrieved for the specified application, the body will contain the current application manifest definition
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManifestDefinitionDto'
 components:
   schemas:
     ManifestDto:

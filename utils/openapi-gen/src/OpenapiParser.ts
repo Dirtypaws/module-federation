@@ -49,13 +49,6 @@ function processTypescriptEndpoints(spec: OpenAPI3, outDir: string) {
 
 function processDotnetEndpoints(spec: OpenAPI3, outDir: string, project: string) {
   const pathObject = spec.paths as PathsObject;
-  const paths = Object.keys(pathObject);
-  if (!paths) {
-    throw new Error('Paths could not be parsed from the OpenApi spec');
-  }
-
-  paths.forEach((path) => {
-    const pathItem = pathObject[path] as PathItemObject;
-    Dotnet.buildController(path, pathItem, outDir, project);
-  });
+  Dotnet.buildControllers(pathObject, outDir, project);
+  Dotnet.registerEndpoints(pathObject, outDir, project);
 }
