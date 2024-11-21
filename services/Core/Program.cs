@@ -29,6 +29,6 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseCors(_ => _.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
-
+app.UseManifestController();
 
 app.Run();
