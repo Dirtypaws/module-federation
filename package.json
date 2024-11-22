@@ -4,7 +4,7 @@
   "description": "A sample project",
   "scripts": {
     "run:all": "concurrently \"cd frontend && yarn start:all\" \"cd services && yarn start:all\"",
-    "generate": "concurrently \"npx nswag run services/Core.Client/config.nswag\" \"npx nswag run frontend/core/src/core.config.nswag\" \"cd services/Core.CLient && refitter -s core.refitter\"",
+    "generate": "concurrently \"npx nswag run frontend/core/src/core.config.nswag\" \"cd services && yarn generate\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

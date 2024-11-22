@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start:all": "yarn start:core",
-    "start:core": "cd Core && dotnet watch run --project Core.csproj"
+    "start:core": "cd Core && dotnet watch run --project Core.csproj",
+    "generate": "concurrently \"npx nswag run Core.Client/config.nswag\" \"cd Core.Client && refitter -s core.refitter\" \"cd Core && yarn generate\""
   }
 }

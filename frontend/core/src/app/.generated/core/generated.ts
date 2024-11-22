@@ -30,9 +30,9 @@ export class ManifestClient {
 
     /**
      * Current application Manifest
-     * @return Result when the application manifest has been retrieved, the body will contain the current application manifest
+     * @return The application manifest has been retrieved, the body will contain the current application manifest
      */
-    get(): Observable<{ [key: string]: ManifestDefinitionDto; }> {
+    manifest#Get(): Observable<{ [key: string]: ManifestDefinitionDto; }> {
         let url_ = this.baseUrl + "/manifest";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -45,11 +45,11 @@ export class ManifestClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGet(response_);
+            return this.processManifest#Get(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGet(response_ as any);
+                    return this.processManifest#Get(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<{ [key: string]: ManifestDefinitionDto; }>;
                 }
@@ -58,7 +58,7 @@ export class ManifestClient {
         }));
     }
 
-    protected processGet(response: HttpResponseBase): Observable<{ [key: string]: ManifestDefinitionDto; }> {
+    protected processManifest#Get(response: HttpResponseBase): Observable<{ [key: string]: ManifestDefinitionDto; }> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -69,6 +69,61 @@ export class ManifestClient {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as { [key: string]: ManifestDefinitionDto; };
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * Current application Manifest
+     * @param application A manifest application
+     * @return The application manifest definition has been retrieved for the specified application, the body will contain the current application manifest definition
+     */
+    manifest#Get2(application: string): Observable<ManifestDefinitionDto> {
+        let url_ = this.baseUrl + "/manifest/{application}";
+        if (application === undefined || application === null)
+            throw new Error("The parameter 'application' must be defined.");
+        url_ = url_.replace("{application}", encodeURIComponent("" + application));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processManifest#Get2(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processManifest#Get2(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ManifestDefinitionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ManifestDefinitionDto>;
+        }));
+    }
+
+    protected processManifest#Get2(response: HttpResponseBase): Observable<ManifestDefinitionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ManifestDefinitionDto;
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {

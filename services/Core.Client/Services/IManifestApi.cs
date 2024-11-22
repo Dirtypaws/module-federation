@@ -20,11 +20,20 @@ namespace Core.Client.Services
     {
         /// <summary>Current application Manifest</summary>
         /// <remarks>Fetches the current application manifest</remarks>
-        /// <returns>Result when the application manifest has been retrieved, the body will contain the current application manifest</returns>
+        /// <returns>The application manifest has been retrieved, the body will contain the current application manifest</returns>
         /// <exception cref="ApiException">Thrown when the request returns a non-success status code.</exception>
         [Headers("Accept: application/json")]
         [Get("/manifest")]
-        Task<IDictionary<string, ManifestDefinitionDto>> GetAsync();
+        Task<IDictionary<string, ManifestDefinitionDto>> ManifestGetAsync();
+
+        /// <summary>Current application Manifest</summary>
+        /// <remarks>Fetches the specified application manifest</remarks>
+        /// <param name="application">A manifest application</param>
+        /// <returns>The application manifest definition has been retrieved for the specified application, the body will contain the current application manifest definition</returns>
+        /// <exception cref="ApiException">Thrown when the request returns a non-success status code.</exception>
+        [Headers("Accept: application/json")]
+        [Get("/manifest/{application}")]
+        Task<ManifestDefinitionDto> ManifestGet2Async(string application);
     }
 
 }
