@@ -18,7 +18,7 @@ import { DateTime, Duration } from "luxon";
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable()
-export class ManifestClient {
+export class AppClient {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -32,8 +32,8 @@ export class ManifestClient {
      * Current application Manifest
      * @return The application manifest has been retrieved, the body will contain the current application manifest
      */
-    manifest#Get(): Observable<{ [key: string]: ManifestDefinitionDto; }> {
-        let url_ = this.baseUrl + "/manifest";
+    get(): Observable<{ [key: string]: AppRegistrationDto; }> {
+        let url_ = this.baseUrl + "/app";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -45,20 +45,20 @@ export class ManifestClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processManifest#Get(response_);
+            return this.processGet(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processManifest#Get(response_ as any);
+                    return this.processGet(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<{ [key: string]: ManifestDefinitionDto; }>;
+                    return _observableThrow(e) as any as Observable<{ [key: string]: AppRegistrationDto; }>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<{ [key: string]: ManifestDefinitionDto; }>;
+                return _observableThrow(response_) as any as Observable<{ [key: string]: AppRegistrationDto; }>;
         }));
     }
 
-    protected processManifest#Get(response: HttpResponseBase): Observable<{ [key: string]: ManifestDefinitionDto; }> {
+    protected processGet(response: HttpResponseBase): Observable<{ [key: string]: AppRegistrationDto; }> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -68,7 +68,7 @@ export class ManifestClient {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as { [key: string]: ManifestDefinitionDto; };
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as { [key: string]: AppRegistrationDto; };
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -80,12 +80,64 @@ export class ManifestClient {
     }
 
     /**
+     * Adds a new entry to the application manifest
+     * @return The application has been registered and is now being served in the app manifest
+     */
+    create(body: CreateAppRegistrationDto): Observable<void> {
+        let url_ = this.baseUrl + "/app";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * Current application Manifest
-     * @param application A manifest application
+     * @param application The name of an App
      * @return The application manifest definition has been retrieved for the specified application, the body will contain the current application manifest definition
      */
-    manifest#Get2(application: string): Observable<ManifestDefinitionDto> {
-        let url_ = this.baseUrl + "/manifest/{application}";
+    getByName(application: string): Observable<AppRegistrationDto> {
+        let url_ = this.baseUrl + "/app/{application}";
         if (application === undefined || application === null)
             throw new Error("The parameter 'application' must be defined.");
         url_ = url_.replace("{application}", encodeURIComponent("" + application));
@@ -100,20 +152,20 @@ export class ManifestClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processManifest#Get2(response_);
+            return this.processGetByName(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processManifest#Get2(response_ as any);
+                    return this.processGetByName(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ManifestDefinitionDto>;
+                    return _observableThrow(e) as any as Observable<AppRegistrationDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ManifestDefinitionDto>;
+                return _observableThrow(response_) as any as Observable<AppRegistrationDto>;
         }));
     }
 
-    protected processManifest#Get2(response: HttpResponseBase): Observable<ManifestDefinitionDto> {
+    protected processGetByName(response: HttpResponseBase): Observable<AppRegistrationDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -123,7 +175,7 @@ export class ManifestClient {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ManifestDefinitionDto;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as AppRegistrationDto;
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -140,9 +192,14 @@ export interface NavigationDto {
     display: string;
 }
 
-export interface ManifestDefinitionDto {
+export enum AppRegistrationType {
+    Module = "module",
+    Componenet = "componenet",
+}
+
+export interface AppRegistrationDto {
     remoteEntry: string;
-    type: ManifestDefinitionDtoType;
+    type: AppRegistrationType;
     id: string;
     ngModuleName: string;
     exposedModule: string;
@@ -152,9 +209,15 @@ export interface ManifestDefinitionDto {
     navigationRoutes: NavigationDto[];
 }
 
-export enum ManifestDefinitionDtoType {
-    Module = "module",
-    Component = "component",
+export interface CreateAppRegistrationDto {
+    remoteEntry: string;
+    type: AppRegistrationType;
+    ngModuleName: string;
+    exposedModule: string;
+    displayName: string;
+    routePath: string;
+    version: string;
+    navigationRoutes: NavigationDto[];
 }
 
 export class ApiException extends Error {

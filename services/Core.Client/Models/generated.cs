@@ -25,7 +25,7 @@ namespace Core.Client.Models
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ManifestDto : System.Collections.Generic.Dictionary<string, ManifestDefinitionDto>
+    public partial class ManifestDto : System.Collections.Generic.Dictionary<string, AppRegistrationDto>
     {
         [System.Text.Json.Serialization.JsonConstructor]
 
@@ -63,11 +63,23 @@ namespace Core.Client.Models
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ManifestDefinitionDto
+    public enum AppRegistrationType
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"module")]
+        Module = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"componenet")]
+        Componenet = 1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class AppRegistrationDto
     {
         [System.Text.Json.Serialization.JsonConstructor]
 
-        public ManifestDefinitionDto(string @displayName, string @exposedModule, string @id, System.Collections.Generic.ICollection<NavigationDto> @navigationRoutes, string @ngModuleName, string @remoteEntry, string @routePath, ManifestDefinitionDtoType @type, string @version)
+        public AppRegistrationDto(string @displayName, string @exposedModule, string @id, System.Collections.Generic.ICollection<NavigationDto> @navigationRoutes, string @ngModuleName, string @remoteEntry, string @routePath, AppRegistrationType @type, string @version)
 
         {
 
@@ -97,7 +109,7 @@ namespace Core.Client.Models
         [System.Text.Json.Serialization.JsonPropertyName("type")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public ManifestDefinitionDtoType Type { get; }
+        public AppRegistrationType Type { get; }
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -130,14 +142,63 @@ namespace Core.Client.Models
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum ManifestDefinitionDtoType
+    public partial class CreateAppRegistrationDto
     {
+        [System.Text.Json.Serialization.JsonConstructor]
 
-        [System.Runtime.Serialization.EnumMember(Value = @"module")]
-        Module = 0,
+        public CreateAppRegistrationDto(string @displayName, string @exposedModule, System.Collections.Generic.ICollection<NavigationDto> @navigationRoutes, string @ngModuleName, string @remoteEntry, string @routePath, AppRegistrationType @type, string @version)
 
-        [System.Runtime.Serialization.EnumMember(Value = @"component")]
-        Component = 1,
+        {
+
+            this.RemoteEntry = @remoteEntry;
+
+            this.Type = @type;
+
+            this.NgModuleName = @ngModuleName;
+
+            this.ExposedModule = @exposedModule;
+
+            this.DisplayName = @displayName;
+
+            this.RoutePath = @routePath;
+
+            this.Version = @version;
+
+            this.NavigationRoutes = @navigationRoutes;
+
+        }
+        [System.Text.Json.Serialization.JsonPropertyName("remoteEntry")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string RemoteEntry { get; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("type")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public AppRegistrationType Type { get; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("ngModuleName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string NgModuleName { get; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("exposedModule")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string ExposedModule { get; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("displayName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string DisplayName { get; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("routePath")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string RoutePath { get; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("version")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Version { get; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("navigationRoutes")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<NavigationDto> NavigationRoutes { get; }
 
     }
 

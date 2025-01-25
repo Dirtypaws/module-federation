@@ -9,13 +9,13 @@ info:
 servers:
   - url: http://localhost:5227
 paths:
-  /manifest:
+  /app:
     get:
       tags:
-        - Manifest
+        - App
       summary: Current application Manifest
       description: Fetches the current application manifest
-      operationId: Manifest#Get
+      operationId: Get
       responses:
         '200':
           description: The application manifest has been retrieved, the body will contain the current application manifest
@@ -23,17 +23,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ManifestDto'
-  /manifest/{application}:
+    post:
+      tags:
+        - App
+      summary: Adds a new entry to the application manifest
+      description: Registers a new application in the application manifest
+      operationId: Create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAppRegistrationDto'
+      responses:
+        '200':
+            description: The application has been registered and is now being served in the app manifest
+  /app/{application}:
     get:
       tags:
-        - Manifest
+        - App
       summary: Current application Manifest
       description: Fetches the specified application manifest
-      operationId: Manifest#Get
+      operationId: GetByName
       parameters:
         - name: application
           in: path
-          description: A manifest application
+          description: The name of an App
           required: true
           schema:
             type: string
@@ -43,13 +58,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ManifestDefinitionDto'
+                $ref: '#/components/schemas/AppRegistrationDto'
 components:
   schemas:
     ManifestDto:
       type: object
       additionalProperties:
-        $ref: '#/components/schemas/ManifestDefinitionDto'
+        $ref: '#/components/schemas/AppRegistrationDto'
     NavigationDto:
       additionalProperties: false
       type: object
@@ -61,7 +76,12 @@ components:
           type: string
         display:
           type: string
-    ManifestDefinitionDto:
+    AppRegistrationType:
+      type: string
+      enum:
+        - module
+        - componenet
+    AppRegistrationDto:
       additionalProperties: false
       type: object
       required:
@@ -78,10 +98,7 @@ components:
         remoteEntry:
           type: string
         type:
-          type: string
-          enum:
-            - module
-            - component
+          $ref: '#/components/schemas/AppRegistrationType'
         id:
           type: string
         ngModuleName:
@@ -98,7 +115,37 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NavigationDto'
-
+    CreateAppRegistrationDto:
+      additionalProperties: false
+      type: object
+      required:
+        - remoteEntry
+        - type
+        - ngModuleName
+        - exposedModule
+        - displayName
+        - routePath
+        - version
+        - navigationRoutes
+      properties:
+        remoteEntry:
+          type: string
+        type:
+          $ref: '#/components/schemas/AppRegistrationType'
+        ngModuleName:
+          type: string
+        exposedModule:
+          type: string
+        displayName:
+          type: string
+        routePath:
+          type: string
+        version:
+          type: string
+        navigationRoutes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NavigationDto'
   securitySchemes:
     bearerAuth:
       type: http

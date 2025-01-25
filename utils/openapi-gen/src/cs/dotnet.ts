@@ -1,5 +1,14 @@
 import * as fs from 'fs';
-import { OperationObject, ParameterObject, PathItemObject, PathsObject, SchemaObject } from 'openapi-typescript';
+import {
+  MediaTypeObject,
+  OperationObject,
+  ParameterObject,
+  PathItemObject,
+  PathsObject,
+  ReferenceObject,
+  RequestBodyObject,
+  SchemaObject,
+} from 'openapi-typescript';
 import { ControllerType } from './dotnet.definition';
 
 export class Dotnet {
@@ -11,7 +20,7 @@ export class Dotnet {
 
       for (const pathItem in pathsItem) {
         const operation = pathsItem[pathItem][1] as OperationObject;
-        const controller = operation.operationId?.split('#')[0] ?? '';
+        const controller = operation.tags ? operation.tags[0] : 'Unmatched';
         if (!controllers[controller]) {
           controllers[controller] = [operation];
         } else {
@@ -32,7 +41,7 @@ export class Dotnet {
     Object.entries(pathsObject).forEach((pathObject) => {
       Object.entries(pathObject[1] as PathItemObject).forEach((pathItem) => {
         const operation = pathItem[1] as OperationObject;
-        const controller = operation.operationId?.split('#')[0] ?? '';
+        const controller = operation.tags ? operation.tags[0] : 'Unmatched';
         if (!controllers[controller]) {
           controllers[controller] = {};
         }
@@ -50,33 +59,45 @@ export class Dotnet {
     Object.keys(controllers).forEach((controller) => {
       const filePath = `Program.${controller}.g.cs`;
       let code = `
+using Core.Client.Models;      
 using ${project}.Controllers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ${project};
 
 internal static partial class ${controller}
 {
-  private static readonly IManifestController _controller;
+  private static readonly I${controller}Controller _controller;
 
   internal static void Use${controller}Controller(this WebApplication app) 
   {
     `;
       Object.entries(controllers[controller]).forEach(([verb, definition]) => {
         definition.operations.forEach((element) => {
-          const method = element.operationId?.split('#')[1];
+          const method = element.operationId;
           if (!method) {
             throw new Error('Malformed openapi specification');
           }
           const params = element.parameters ? (element.parameters as ParameterObject[]) : [];
-          const args = params
-            .map((param) => {
-              const schema = param.schema as SchemaObject;
-              if (schema) {
-                return `${schema.type} ${param.name}`;
-              }
-            })
-            .join(', ');
+          const pathParams = params.map((param) => {
+            const schema = param.schema as SchemaObject;
+            if (schema) {
+              return `${schema.type} ${param.name}`;
+            }
+          });
 
+          if (element.requestBody) {
+            const schema = ((element.requestBody as RequestBodyObject).content['application/json'] as MediaTypeObject)
+              .schema as ReferenceObject;
+            const refParts = schema.$ref.split('/');
+            const className = refParts[refParts.length - 1];
+            pathParams.push(`[FromBody]${className} body`);
+            params.push({
+              name: 'body',
+              in: 'cookie',
+            });
+          }
+          const args = pathParams.join(', ');
           code += `app.Map${verb.charAt(0).toUpperCase() + verb.slice(1)}("${
             definition.path
           }", async (${args}) => { return await _controller.${method}(${params
@@ -129,21 +150,27 @@ namespace ${project}.Controllers;
 public interface I${controller}Controller
 {`;
     operations.forEach((operation) => {
-      const method = operation.operationId?.split('#')[1];
+      const method = operation.operationId;
       if (!method) {
-        throw new Error(`Unable to build interface for operation ${operation.operationId}`);
+        throw new Error(`Unable to build interface for operation ${method}`);
       }
       const params = operation.parameters ? (operation.parameters as ParameterObject[]) : [];
-      const args = params
-        .map((param) => {
-          const schema = param.schema as SchemaObject;
-          if (schema) {
-            return `${schema.type} ${param.name}`;
-          }
-        })
-        .join(', ');
+      const pathParams = params.map((param) => {
+        const schema = param.schema as SchemaObject;
+        if (schema) {
+          return `${schema.type} ${param.name}`;
+        }
+      });
+
+      if (operation.requestBody) {
+        const schema = ((operation.requestBody as RequestBodyObject).content['application/json'] as MediaTypeObject)
+          .schema as ReferenceObject;
+        const refParts = schema.$ref.split('/');
+        const className = refParts[refParts.length - 1];
+        pathParams.push(`${className} body`);
+      }
       interfaceCode += `
-  Task<IResult> ${method}(${args});`;
+  Task<IResult> ${method}(${pathParams.join(', ')}${''});`;
     });
 
     interfaceCode += `

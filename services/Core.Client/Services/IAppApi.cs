@@ -16,24 +16,31 @@ namespace Core.Client.Services
 {
     /// <summary>Current application Manifest</summary>
     [System.CodeDom.Compiler.GeneratedCode("Refitter", "1.4.0.0")]
-    public partial interface IManifestApi
+    public partial interface IAppApi
     {
         /// <summary>Current application Manifest</summary>
         /// <remarks>Fetches the current application manifest</remarks>
         /// <returns>The application manifest has been retrieved, the body will contain the current application manifest</returns>
         /// <exception cref="ApiException">Thrown when the request returns a non-success status code.</exception>
         [Headers("Accept: application/json")]
-        [Get("/manifest")]
-        Task<IDictionary<string, ManifestDefinitionDto>> ManifestGetAsync();
+        [Get("/app")]
+        Task<IDictionary<string, AppRegistrationDto>> GetAsync();
+
+        /// <summary>Adds a new entry to the application manifest</summary>
+        /// <remarks>Registers a new application in the application manifest</remarks>
+        /// <returns>A <see cref="Task"/> that completes when the request is finished.</returns>
+        /// <exception cref="ApiException">Thrown when the request returns a non-success status code.</exception>
+        [Post("/app")]
+        Task CreateAsync([Body] CreateAppRegistrationDto body);
 
         /// <summary>Current application Manifest</summary>
         /// <remarks>Fetches the specified application manifest</remarks>
-        /// <param name="application">A manifest application</param>
+        /// <param name="application">The name of an App</param>
         /// <returns>The application manifest definition has been retrieved for the specified application, the body will contain the current application manifest definition</returns>
         /// <exception cref="ApiException">Thrown when the request returns a non-success status code.</exception>
         [Headers("Accept: application/json")]
-        [Get("/manifest/{application}")]
-        Task<ManifestDefinitionDto> ManifestGet2Async(string application);
+        [Get("/app/{application}")]
+        Task<AppRegistrationDto> GetByNameAsync(string application);
     }
 
 }

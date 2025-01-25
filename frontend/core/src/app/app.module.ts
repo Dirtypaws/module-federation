@@ -11,7 +11,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { ManifestService } from './manifest.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { staticRoutes } from './app.routes';
-import { ManifestClient } from './.generated/core/generated';
+import { AppClient } from './.generated/core/generated';
 
 function initializeApp(manifestService: ManifestService) {
   return (): Promise<any> => {
@@ -34,13 +34,13 @@ function initializeApp(manifestService: ManifestService) {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(staticRoutes),
     provideHttpClient(withInterceptorsFromDi()),
-    ManifestClient,
+    AppClient,
     ManifestService,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
       multi: true,
-      deps: [ManifestService, ManifestClient],
+      deps: [ManifestService, AppClient],
     },
   ],
   bootstrap: [AppComponent],

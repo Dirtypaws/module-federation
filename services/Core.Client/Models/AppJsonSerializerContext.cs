@@ -4,7 +4,7 @@ using Core.Client.Models;
 namespace Core.Internal.Models;
 
 [JsonSerializable(typeof(ManifestDto))]
-[JsonSerializable(typeof(Dictionary<string, ManifestDefinitionDto>))]
+[JsonSerializable(typeof(Dictionary<string, AppRegistrationDto>))]
 [JsonSerializable(typeof(NavigationDto))]
 public partial class AppJsonSerializerContext : JsonSerializerContext
 {
