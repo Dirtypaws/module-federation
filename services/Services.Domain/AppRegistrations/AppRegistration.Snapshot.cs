@@ -1,10 +1,7 @@
-﻿using System.Runtime.CompilerServices;
-using Core.Client.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Semantics;
+﻿using Core.Client.Models;
 using Semantics.Modeling.Domain;
 
-namespace Core.Domain.AppRegistrations
+namespace Services.Domain.AppRegistrations
 {
     public partial class AppRegistration
     {

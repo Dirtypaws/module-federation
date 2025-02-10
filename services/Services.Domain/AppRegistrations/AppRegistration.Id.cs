@@ -1,4 +1,4 @@
-﻿namespace Core.Domain.AppRegistrations
+﻿namespace Services.Domain.AppRegistrations
 {
     public partial class AppRegistration
     {

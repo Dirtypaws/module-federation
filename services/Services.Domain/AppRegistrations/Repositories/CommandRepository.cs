@@ -1,7 +1,7 @@
 ﻿using Semantics;
 using Semantics.Modeling.Domain;
 
-namespace Core.Domain.AppRegistrations.Repositories
+namespace Services.Domain.AppRegistrations.Repositories
 {
     public class CommandRepository(QueryRepository queryRepo, IEventHandler[] handlers) : EventHandlerRepository<AppRegistration, AppRegistration.Id>(handlers)
     {

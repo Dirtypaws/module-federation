@@ -98,9 +98,9 @@ internal static partial class ${controller}
             });
           }
           const args = pathParams.join(', ');
-          code += `app.Map${verb.charAt(0).toUpperCase() + verb.slice(1)}("${
-            definition.path
-          }", async (${args}) => { return await _controller.${method}(${params
+          code += `app.Map${verb.charAt(0).toUpperCase() + verb.slice(1)}("${definition.path}${params
+            .map((p) => p.name)
+            .join('/')}", async (${args}) => { return await _controller.${method}(${params
             .map((p) => p.name)
             .join(', ')}); });\r\n    `;
         });

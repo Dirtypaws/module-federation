@@ -1,7 +1,6 @@
 
 using Core.Controllers;
-using Core.Domain.AppRegistrations.Repositories;
-using Semantics;
+using Services.Domain.AppRegistrations.Repositories;
 
 namespace Core;
 

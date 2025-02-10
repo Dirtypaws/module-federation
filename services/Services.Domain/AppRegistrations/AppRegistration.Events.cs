@@ -1,7 +1,7 @@
 ﻿using Core.Client.Models;
 using Semantics.Modeling.Domain;
 
-namespace Core.Domain.AppRegistrations
+namespace Services.Domain.AppRegistrations
 {
     public partial class AppRegistration
     {

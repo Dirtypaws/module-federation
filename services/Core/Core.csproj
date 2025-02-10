@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <ItemGroup>
     <PackageReference Include="Refit" Version="8.0.0" />
-    <PackageReference Include="Semantics" Version="0.0.269" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core.Client\Core.Client.csproj" />
+    <ProjectReference Include="..\Services.Domain\Services.Domain.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
